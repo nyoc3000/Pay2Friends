@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <title>E-Scribe</title>
+        <link rel="stylesheet" href="css/onsenui.css"/>
+        <link rel="stylesheet" href="css/onsen-css-components.css"/>
+         <link rel="stylesheet" href="css/styles.css"/>
+        <script src="js/angular/angular.js"></script>
+        <script src="js/onsenui.js"></script>
+        <script>
+          ons.bootstrap();
+		  ons.ready(function() {
+		
+			// Add another Onsen UI element
+			//var content = document.getElementById("my-content");
+			//content.innerHTML="<ons-button>Another Button</ons-button>";
+			//ons.compile(content);
+		
+
+		  });
+		
+  		
+        </script>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/functions.js"></script>
+        <script type="text/javascript">
+            app.initialize();
+        </script>
+    </head>
+    <body>
+    
+
+         <ons-navigator var="myNavigator"> 
+      
+         
+              <ons-page>
+                <ons-toolbar fixed-style>
+                 
+                  <div class="center logobar"><img src="img/logo.png"></div>
+                </ons-toolbar>
+            
+                <div class="whiteblock"><img src="img/rxlogo.png"></div>
+                <div class="introtext">
+                <p>Escribe is your digital repository for...</p>
+                </div>
+                <div class="whiteblock">
+
+                <ons-button modifier="large" onclick="myNavigator.pushPage('login', { animation: 'lift' });">Log in</ons-button>
+				
+                <br>
+                <a href="javascript:void(0);" onclick="myNavigator.pushPage('register', { animation: 'none' });">Create new account</a>
+                </div>
+             </ons-page>
+             
+             
+       
+        </ons-navigator>  
+        
+        <ons-template id="register">
+              <ons-page>
+                <ons-toolbar fixed-style>
+                  <div class="left">
+ 					<ons-back-button>Back</ons-back-button>                  
+                  </div>
+                  <div class="center logobar"><img src="img/logo.png"></div>
+                </ons-toolbar>
+                <div class="secondarybar">Patient Register</div>
+            <form name="register" id="register_form" style="margin:30px 40px 30px 20px;	">
+            <ons-row>
+              <ons-col width="100px"><label>First Name</label></ons-col>
+              <ons-col><input name="firstname" id="firstname" class="val-required"></ons-col>
+            </ons-row>
+            <ons-row>
+              <ons-col width="100px"><label>Last Name</label></ons-col>
+              <ons-col><input name="lastname" id="lastname" class="val-required">
+            </ons-row>
+            <ons-row>
+              <ons-col width="100px"><label>Date of Birth</label></ons-col>
+              <ons-col><input type="date" name="birth" id="birth" class="val-required">
+            </ons-row>
+            <ons-row>
+              <ons-col width="100px"><label>Address</label></ons-col>
+              <ons-col><input name="address" id="address" class="val-required">
+            </ons-row>
+            <ons-row>
+              <ons-col width="100px"><label>City</label ></ons-col>
+              <ons-col><input name="city" id="city" class="val-required">
+            </ons-row>
+            <ons-row>
+              <ons-col width="100px"><label>Province</label></ons-col>
+              <ons-col><select name="province" id="province" class="val-required">
+                    <option value="">- select -</option>
+              		<option value="AB">Alberta</option>
+                    <option value="BC">British Columbia</option>
+                    <option value="MB">Manitoba</option>
+                    <option value="NB">New Brunswick</option>
+                    <option value="NL">Newfoundland and Labrador</option>
+                    <option value="NS">Nova Scotia</option>
+                    <option value="ON">Ontario</option>
+                    <option value="PE">Prince Edward Island</option>
+                    <option value="QC">Quebec</option>
+                    <option value="SK">Saskatchewan</option>
+                    <option value="NT">Northwest Territories</option>
+                    <option value="NU">Nunavut</option>
+                    <option value="YT">Yukon</option>
+              </select>
+            </ons-row>
+            <ons-row>
+              <ons-col width="100px"><label>Postal Code</label></ons-col>
+              <ons-col><input name="zip" id="zip" class="val-required">
+            </ons-row>
+            <ons-row>
+              <ons-col width="100px"><label>Email</label></ons-col>
+              <ons-col><input name="email" id="email" class="val-required val-email">
+            </ons-row>
+            <ons-row>
+              <ons-col width="100px"><label>Phone</label></ons-col>
+              <ons-col><input name="mobile" id="mobile" class="val-required">
+            </ons-row>
+            <ons-row>
+              <ons-col width="100px"><label>SIN #</label></ons-col>
+              <ons-col><input name="sin" id="sin" class="val-required">
+            </ons-row>
+            <ons-row>
+              <ons-col width="100px"><label>Password</label></ons-col>
+              <ons-col><input name="password" id="password" type="password" class="val-required val-min6">
+            </ons-row>
+            </form>   
+             <ons-button modifier="large" onclick="if(checkform('register_form')) { register_user(); }">Submit</ons-button>
+<br>
+
+             </ons-page>
+        </ons-template>
+        
+        
+        <ons-template id="login">   
+         
+              <ons-page>
+                <ons-toolbar fixed-style>
+                  <div class="left" style="line-height: 44px">
+                    <ons-back-button>Back</ons-back-button>
+                  </div>
+                  <div class="center logobar"><img src="img/logo.png"></div>
+                </ons-toolbar>
+            
+                <div class="whiteblock"><img src="img/rxlogo.png"></div>
+                <div class="introtext">
+                <form name="login" id="login">
+                <input name="username" id="username" placeholder="USERNAME / EMAIL" class="val-required">
+                <input name="password" id="password" type="password"  placeholder="PASSWORD" class="val-required">
+                </form>
+                </div>
+                <div class="whiteblock">
+
+                <ons-button modifier="large" onclick="if (checkform('login')) { api_login(); }">Log in</ons-button><br>
+
+				<a href="javascript:void(0);" onclick="myNavigator.pushPage('forgot', { animation: 'lift' });">Forgot Password?</a>
+
+                </div>
+                
+             </ons-page>
+
+        </ons-template>
+        
+        <ons-template id="forgot">   
+         
+              <ons-page>
+                <ons-toolbar fixed-style>
+                  <div class="left" style="line-height: 44px">
+                    <ons-back-button>Back</ons-back-button>
+                  </div>
+                  <div class="center logobar"><img src="img/logo.png"></div>
+                </ons-toolbar>
+             <div class="whiteblock"><img src="img/lock.png"></div>
+                <div class="introtext">
+                <p>Please enter your email below:</p><br>
+                <form name="reset" id="reset">
+                <input name="usere" id="usere" placeholder="USERNAME / EMAIL" class="val-required">
+                </form>
+                </div>
+                <div class="whiteblock">
+
+                <ons-button modifier="large" onclick="if (checkform('reset')) { api_reset(); }">Reset Password</ons-button><br>
+
+
+                </div>
+                <div class="loaderover" style="display:none;"></div>
+             </ons-page>
+
+        </ons-template>
+        
+    </body>
+</html>
+
+
+</

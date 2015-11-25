@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=medium-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <title>E-Scribe</title>
+        <link rel="stylesheet" href="css/onsenui.css"/>
+        <link rel="stylesheet" href="css/onsen-css-components.css"/>
+         <link rel="stylesheet" href="css/styles.css"/>
+        <script src="js/angular/angular.js"></script>
+        <script src="js/onsenui.js"></script>
+        <script>
+          ons.bootstrap();
+		  ons.ready(function() {
+			//loaduserdata();
+			//validate();  
+			//$('.loader').hide();
+		  });
+		  document.addEventListener("deviceready", onDeviceReady, false);
+			function onDeviceReady() {
+				loaduserdata();
+			}
+
+        </script>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/functions.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js"></script>
+
+        <script type="text/javascript">
+            app.initialize();
+        </script>
+    </head>
+    <body>
+    
+            <ons-sliding-menu
+                  main-page="home"
+                  menu-page="menu"       
+                  side="left"
+                  max-slide-distance="250px"
+                  var="menu">
+			</ons-sliding-menu>
+            
+         <ons-template id="menu">
+            <ons-page> 
+	           <ons-list>
+               <ons-list-header>Account</ons-list-header>
+                  <ons-list-item class="list__item--tappable list__item__line-height" modifier="chevron" onclick="mydata(); menu.closeMenu();"><ons-icon icon="fa-user" size="15px"></ons-icon>Edit My Data</ons-list-item>
+                  <ons-list-item class="list__item--tappable list__item__line-height" modifier="chevron" onclick="logout(); menu.closeMenu();"><ons-icon icon="fa-sign-out" size="15px"></ons-icon>Log Out</ons-list-item>
+                  <ons-list-header>My eScribe<sup>TM</sup></ons-list-header>
+                  <ons-list-item class="list__item--tappable list__item__line-height" modifier="chevron" onclick="loadprescriptions(); menu.closeMenu();"><ons-icon icon="fa-medkit" size="15px"></ons-icon>Prescriptions</ons-list-item>
+                  <ons-list-item class="list__item--tappable list__item__line-height" modifier="chevron" onclick="loaddoctors(); menu.closeMenu();"><ons-icon icon="fa-user-md" size="15px"></ons-icon>My Doctors</ons-list-item>
+                  <ons-list-item class="list__item--tappable list__item__line-height" modifier="chevron" onclick="loadmedications(); menu.closeMenu();"><ons-icon icon="fa-heartbeat" size="15px"></ons-icon>Medications</ons-list-item>
+                  <ons-list-item class="list__item--tappable list__item__line-height" modifier="chevron" onclick="loadpharmacies(); menu.closeMenu();"><ons-icon icon="fa-ambulance" size="15px"></ons-icon>My Pharmacies</ons-list-item>
+                  <ons-list-item class="list__item--tappable list__item__line-height" modifier="chevron" onclick="loadallergies(); menu.closeMenu();"><ons-icon icon="fa-flash" size="15px"></ons-icon>Drug Allergies</ons-list-item>
+
+                </ons-list>
+           </ons-page>
+         </ons-template>
+
+        <ons-template id="home">   
+        <ons-navigator var="myNavigator">
+         
+              <ons-page>
+                <ons-toolbar fixed-style>
+                  <div class="left">
+                    <ons-toolbar-button ng-click="menu.toggleMenu()"><ons-icon icon="ion-navicon" style="font-size: 32px; width: 1em; color:white;" ></ons-icon></ons-toolbar-button>
+                  </div>
+                  <div class="center logobar"><img src="img/logo.png"></div>
+                </ons-toolbar>
+            	
+                <div class="whiteblock"><img src="img/userslogo.png"></div>
+                <div class="greyarea">
+                <p><span id="users_name"></span>&nbsp;<span id="users_surname"></span></p>
+                
+                </div>
+                <div class="whiteblock" style="padding-top:0px;">
+				<!--<img id="barcode" src="../../data/codebars/1234567890-1234567890.gif">-->
+           		<ons-list>
+                  <ons-list-item class="list__item--tappable list__item__line-height frontlist" modifier="chevron" onclick="loadprescriptions();">Prescriptions
+                  <span class="list-item-note" id="prescriptions_notification"></span>
+                  </ons-list-item>
+                  <ons-list-item class="list__item--tappable list__item__line-height frontlist" modifier="chevron" onclick="loaddoctors();">My Doctors</ons-list-item>
+                  <ons-list-item class="list__item--tappable list__item__line-height frontlist" modifier="chevron" onclick="loadmedications();">Medications</ons-list-item>
+                  <ons-list-item class="list__item--tappable list__item__line-height frontlist" modifier="chevron" onclick="loadpharmacies();">My Pharmacies</ons-list-item>
+                  <ons-list-item class="list__item--tappable list__item__line-height frontlist" modifier="chevron" onclick="loadallergies();">Drug Allergies</ons-list-item>
+                </ons-list>
+                </div>
+             </ons-page>
+             
+             
+       
+        </ons-navigator>
+        </ons-template>
+        
+        
+             <ons-template id="findyourdoctor">
+              <ons-page>
+                <ons-toolbar fixed-style>
+                  <div class="left">
+ 					<ons-back-button>Back</ons-back-button>                  
+                  </div>
+                  <div class="center logobar"><img src="img/logo.png"></div>
+                  
+                </ons-toolbar>
+                <div class="secondarybar">My Doctors
+                  <ons-icon icon="fa-star-o" style="font-size: 25px; width: 1em; color:green; position:absolute; right:10px; top:10px;" onclick="saveddoctors();"></ons-icon>
+                </div>
+            
+            	<div class="searchdoctor">
+                <ons-row>
+                  <ons-col width="90px"><a href="javascript:void(0);" class="button sm" onClick="search_doctors();">Find</a></ons-col>
+                  <ons-col><input name="doctor" id="doctor" placeholder="Search..."></ons-col>
+                  <ons-col width="90px"><a href="javascript:void(0);" class="button sm" onClick="locate_map();">Map</a></ons-col>
+                </ons-row>
+                </div>
+                <div id="map">
+                
+                </div>
+                <ul class="doctorslist"  id="doctorslist">
+                        <div class="emptylist">No doctors in your list. Enter a name or city above to search for a doctor.</div>
+
+                  </ul>
+				
+             </ons-page>
+        </ons-template>
+        
+        
+         <ons-template id="saveddoctors">
+              <ons-page>
+                <ons-toolbar fixed-style>
+                  <div class="left">
+ 					<ons-back-button>Back</ons-back-button>                  
+                  </div>
+                  <div class="center logobar"><img src="img/logo.png"></div>
+                  
+                </ons-toolbar>
+                <div class="secondarybar">Saved Doctors
+                  <ons-icon icon="fa-edit" id="editbut" style="font-size: 25px; width: 1em; color:green; position:absolute; right:10px; top:10px;" onclick="deletedoctors(0);"></ons-icon>
+                </div>
+           
+                <ul class="doctorslist" id="saveddoctorslist">
+                        <div class="emptylist">You don't have any saved doctor</div>
+
+                  </ul>
+			<a href="#" id="overbutton_editdoctors" class="overbutton" onClick="deletedoctors('e');">Done</a>
+             </ons-page>
+        </ons-template>
+        
+        
+        <ons-template id="pharmacies">
+              <ons-page>
+                <ons-toolbar fixed-style>
+                  <div class="left">
+ 					<ons-back-button>Back</ons-back-button>                  
+                  </div>
+                  <div class="center logobar"><img src="img/logo.png"></div>
+                  
+                </ons-toolbar>
+                <div class="secondarybar">My Pharmacies
+                  <ons-icon icon="fa-star-o" style="font-size: 25px; width: 1em; color:green; position:absolute; right:10px; top:10px;" onclick="savedpharmacies();"></ons-icon>
+                </div>
+            
+            	<div class="searchdoctor">
+                <ons-row>
+                  <ons-col width="90px"><a href="javascript:void(0);" class="button sm" onClick="search_pharmacy();">Find</a></ons-col>
+                  <ons-col><input name="pharmacy" id="pharmacy" placeholder="Search..."></ons-col>
+                  <ons-col width="90px"><a href="javascript:void(0);" class="button sm" onClick="locate_map();">Map</a></ons-col>
+                </ons-row>
+                </div>
+                <div id="map">
+                
+                </div>
+                <ul class="doctorslist"  id="doctorslist">
+                        <div class="emptylist">No pharmacies in your list. Enter a name or city above to search for a pharmacy.</div>
+
+                  </ul>
+				
+             </ons-page>
+        </ons-template>
+        
+        
+         <ons-template id="savedpharmacies">
+              <ons-page>
+                <ons-toolbar fixed-style>
+                  <div class="left">
+ 					<ons-back-button>Back</ons-back-button>                  
+                  </div>
+                  <div class="center logobar"><img src="img/logo.png"></div>
+                  
+                </ons-toolbar>
+                <div class="secondarybar">Saved Pharmacies
+                  <ons-icon icon="fa-edit" id="editbut" style="font-size: 25px; width: 1em; color:green; position:absolute; right:10px; top:10px;" onclick="deletepharmacies(0);"></ons-icon>
+                </div>
+           
+                <ul class="doctorslist" id="saveddoctorslist">
+                        <div class="emptylist">You don't have any saved pharmacy</div>
+
+                  </ul>
+			<a href="#" id="overbutton_editph" class="overbutton" onClick="deletepharmacies('e');">Done</a>
+             </ons-page>
+        </ons-template>
+        
+        
+         <ons-template id="medications">
+              <ons-page>
+                <ons-toolbar fixed-style>
+                  <div class="left">
+ 					<ons-back-button>Back</ons-back-button>                  
+                  </div>
+                  <div class="center logobar"><img src="img/logo.png"></div>
+                  
+                </ons-toolbar>
+                <div class="secondarybar">Medications
+                 <!-- <ons-icon icon="fa-plus" style="font-size: 25px; width: 1em; color:green; position:absolute; right:10px; top:10px;" onclick="myNavigator.pushPage('addallergies', { animation: 'slide' });"></ons-icon>-->
+                </div>
+            
+            	<!--<div class="searchdoctor">
+                <ons-row>
+                  <ons-col width="90px"><a href="javascript:void(0);" class="button sm" onClick="search_allergy();">Find</a></ons-col>
+                  <ons-col><input name="allergy" id="allergy" placeholder="Search..."></ons-col>
+                  <ons-col width="10px"></ons-col>
+                </ons-row>
+                </div>-->
+                <div id="map">
+                
+                </div>
+                <ul class="doctorslist"  id="doctorslist">
+                        <div class="emptylist">You do not have medications at this moment</div>
+
+                  </ul>
+				
+             </ons-page>
+        </ons-template>
+        
+         <ons-template id="allergies">
+              <ons-page>
+                <ons-toolbar fixed-style>
+                  <div class="left">
+ 					<ons-back-button>Back</ons-back-button>                  
+                  </div>
+                  <div class="center logobar"><img src="img/logo.png"></div>
+                  
+                </ons-toolbar>
+                <div class="secondarybar">Drug Allergies
+                <ons-icon icon="fa-plus" style="font-size: 25px; width: 1em; color:green; position:absolute; right:10px; top:10px;" onclick="editallergy(0);"></ons-icon>
+                </div>
+
+                <ul class="doctorslist"  id="doctorslist">
+                        <div class="emptylist">You have not entered any allergy.</div>
+
+                  </ul>
+				
+             </ons-page>
+        </ons-template>
+        
+        
+         <ons-template id="addallergies">
+              <ons-page>
+                <ons-toolbar fixed-style>
+                  <div class="left">
+ 					<ons-back-button>Back</ons-back-button>                  
+                  </div>
+                  <div class="center logobar"><img src="img/logo.png"></div>
+                  
+                </ons-toolbar>
+                <div class="secondarybar">Add/Edit allergy
+                 
+                </div>
+        		<form name="allergy_form" id="allergy_form" method="post">
+               <ons-list modifier="inset" style="margin-top: 10px">
+                <ons-list-item class="to-wrapper">
+                  
+                  <input type="text" class="text-input text-input--transparent val-required" placeholder="Name" id="name" style="width: 100%">
+                </ons-list-item>
+        
+                <ons-list-item>
+                  <textarea class="textarea textarea--transparent" placeholder="Details (optional)" id="description" style="width: 100%; height: 100px;"></textarea>
+                </ons-list-item>
+
+              </ons-list>
+              <input type="hidden" value="0" id="id" name="id" >
+        		</form>
+              <div style="padding: 10px 9px">
+                <ons-button modifier="large" onclick="add_allergy();" style="margin: 0 auto;">
+                  Save
+                </ons-button>
+              </div>
+        
+        
+            </ons-page>
+        </ons-template>
+        
+        <ons-template id="prescriptions">
+              <ons-page>
+                <ons-toolbar fixed-style>
+                  <div class="left">
+ 					<ons-back-button>Back</ons-back-button>                  
+                  </div>
+                  <div class="center logobar"><img src="img/logo.png"></div>
+                  
+                </ons-toolbar>
+                <div class="secondarybar">Prescriptions
+                </div>
+            
+            	
+                <ul class="doctorslist"  id="doctorslist">
+                       <div class="loaderover"></div>
+
+                  </ul>
+				
+             </ons-page>
+        </ons-template>
+        
+        <ons-template id="get">
+              <ons-page>
+                <ons-toolbar fixed-style>
+                  <div class="left">
+ 					<ons-back-button>Back</ons-back-button>                  
+                  </div>
+                  <div class="center logobar"><img src="img/logo.png"></div>
+                  
+                </ons-toolbar>       
+            	
+                <ul class="doctorslist"  id="get">
+                       <div class="loaderover"></div>
+
+                  </ul>
+				
+             </ons-page>
+        </ons-template>
+        
+         <ons-template id="mydata">
+              <ons-page>
+                <ons-toolbar fixed-style>
+                  <div class="left">
+ 					<ons-back-button>Cancel</ons-back-button>                  
+                  </div>
+                  <div class="center logobar"><img src="img/logo.png"></div>
+                  
+                </ons-toolbar>
+                <div class="secondarybar">Edit My Data
+                </div>
+            
+            	
+                <ul class="doctorslist"  id="mydata">
+                       <div class="loaderover"></div>
+
+                  </ul>
+				
+             </ons-page>
+        </ons-template>
+   
+        
+    </body>
+</html>
